@@ -1,7 +1,27 @@
 import React, {useContext} from 'react';
-import {Button, Menu} from 'semantic-ui-react'
 import UserContext from '../../UserContext';
+import {withStyles} from "@mui/styles";
+import Button from "@mui/material/Button";
+import AppBar from "@mui/material/AppBar";
+import Typography from "@mui/material/Typography";
+import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+
 const { ipcRenderer } = window.require('electron');
+
+const styles = {
+    root: {
+        flexGrow: 1
+    },
+    grow: {
+        flexGrow: 1
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20
+    }
+};
 
 function Header() {
     const userInfo = useContext(UserContext);
@@ -84,27 +104,47 @@ function Header() {
         );
     }*/
 
-
     return (
-        <Menu size='tiny'>
-            <Menu.Item
-                name='My Dashboard'
-            />
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{ mr: 2 }}
+                    >
+
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        My Dashboard
+                    </Typography>
+                    <Typography variant="h6" color="inherit" align="right">
+                        {userInfo.name} 님
+                    </Typography>
+                    <Button color="inherit" >Logout</Button>
+                </Toolbar>
+            </AppBar>
+        </Box>
+
+        /*<Menu size='tiny'>
 
             <Menu.Menu position='right'>
-                {/*<Menu.Item>
+                {/!*<Menu.Item>
                     {settingContent()}
-                </Menu.Item>*/}
+                </Menu.Item>*!/}
 
                 <Menu.Item>
                     {userInfo.name} 님
                 </Menu.Item>
                 <Menu.Item>
-                    <Button primary onClick={onClickLogout}>Log out</Button>
+                    <Button variant="outlined">Outlined</Button>
+                    {/!*<Button primary onClick={onClickLogout}>Log out</Button>*!/}
                 </Menu.Item>
             </Menu.Menu>
-        </Menu>
+        </Menu>*/
     )
 }
 
-export default Header;
+export default withStyles(styles)(Header);
