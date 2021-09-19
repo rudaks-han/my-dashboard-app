@@ -1,9 +1,11 @@
 import React from 'react';
 import {Button, Dropdown, Popup} from 'semantic-ui-react'
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Box from "@mui/material/Box";
 
 const ExtraButtons = props => {
     if (props.authenticated && props.userInfo) {
-        return <div style={{"marginBottom":"5px"}}>
+        /*return <div style={{"marginBottom":"5px"}}>
             <Button.Group>
                 <Popup
                     content={props.userInfo.clockInTime}
@@ -30,7 +32,25 @@ const ExtraButtons = props => {
                     trigger={<></>}
                 />
             </Button.Group>
-        </div>
+        </div>*/
+
+        return (
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    '& > *': {
+                        m: 1,
+                    },
+                }}
+            >
+                <ButtonGroup variant="outlined" aria-label="outlined button group">
+                    <Button >출근하기</Button>
+                    {/*<Button onClick={props.onClockOut} disabled={!!props.userInfo.clockedOut}>퇴근하기</Button>*/}
+                </ButtonGroup>
+            </Box>
+        );
     } else {
         return null;
     }

@@ -1,13 +1,20 @@
 import React, {useContext, useEffect, useState} from 'react';
 import daouofficeIcon from '../../static/image/daouoffice.ico';
-import {Card} from 'semantic-ui-react'
 import UiShare from '../../UiShare';
 import TimerContext from "../../TimerContext";
-import ExtraButtons from "./ExtraButtons";
-import RightMenu from "./RightMenu";
-import AddLinkLayer from "../share/AddLinkLayer";
-import TitleLayer from "../share/TitleLayer";
 import ContentLayer from "./ContentLayer";
+import CardActions from "@mui/material/CardActions";
+import CardHeader from "@mui/material/CardHeader";
+import Card from "@mui/material/Card";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import Popover from "@mui/material/Popover";
+import RightMenu from "./RightMenu";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import ExtraButtons from "./ExtraButtons";
 
 const { ipcRenderer } = window.require('electron');
 
@@ -115,6 +122,7 @@ const Daouoffice = () => {
 
 
     const findList = () => {
+        console.error('___findList')
         setList(null);
         ipcRenderer.send('daouoffice.findList');
         ipcRenderer.removeAllListeners('daouoffice.findListCallback');
@@ -122,9 +130,9 @@ const Daouoffice = () => {
             setList(data);
         });
 
-        ipcRenderer.removeAllListeners('daouoffice.authenticated');
         ipcRenderer.on('daouoffice.authenticated', async (e, data) => {
             setAuthenticated(data);
+            ipcRenderer.removeAllListeners('daouoffice.authenticated');
         });
     }
 
@@ -256,7 +264,39 @@ const Daouoffice = () => {
     }
 
     return (
-        <Card fluid>
+        <Card>
+            <CardHeader
+                avatar={
+                    <img src={daouofficeIcon} alt="" className="header-icon"/>
+                }
+                action={
+                    <RightMenu
+                        authenticated={authenticated}
+                        userInfo={userInfo}
+                        onClickRefresh={onClickRefresh}
+                    />
+                }
+                title="Daouoffice"
+            />
+            <ContentLayer
+                title="Daouoffice"
+                authenticated={authenticated}
+                list={list}
+                dayoffList={dayoffList}
+                myDayoffList={myDayoffList}
+                onClickLogin={onClickLogin}
+                icon={daouofficeIcon}
+            />
+            <CardActions>
+                <ExtraButtons
+                    authenticated={authenticated}
+                    userInfo={userInfo}
+                    /*onClockIn={onClockIn}
+                    onClockOut={onClockOut}*/
+                />
+            </CardActions>
+        </Card>
+        /*<Card fluid>
             <Card.Content>
                 <Card.Header>
                     <TitleLayer title="Daouoffice" icon={daouofficeIcon} />
@@ -292,7 +332,7 @@ const Daouoffice = () => {
                 />
                 <AddLinkLayer href="https://spectra.daouoffice.com/app/hom" />
             </Card.Content>
-        </Card>
+        </Card>*/
     )
 };
 

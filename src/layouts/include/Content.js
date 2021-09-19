@@ -7,6 +7,11 @@ import Jenkins from "../../components/jenkins/Jenkins";
 import Sonarqube from "../../components/sonarqube/Sonarqube";
 import VictoryPortal from "../../components/victoryPortal/VictoryPortal";
 import Modeloffice from "../../components/modeloffice/Modeloffice";
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+/*import Item from "semantic-ui-react";*/
 const { ipcRenderer } = window.require('electron');
 
 const Content = () => {
@@ -45,12 +50,23 @@ const Content = () => {
 
             setState(sortedComponents);
         });
+
+        return () => {
+            ipcRenderer.removeAllListeners('findComponentSortCallback');
+        }
     }
 
     const onSort = (e, data) => {
         const components = state.map(item => item.id);
         ipcRenderer.send('saveComponentSort', components);
     }
+
+    const Item = styled(Paper)(({ theme }) => ({
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    }));
 
     return (
         <div className="pusher">
@@ -59,7 +75,7 @@ const Content = () => {
                     <ReactSortable
                         list={state}
                         setList={setState}
-                        className={'ui grid stackable padded'}
+                        className={'ui grid  '}
                         onSort={onSort}
                         delayOnTouchStart={true}
                         animation={200}
